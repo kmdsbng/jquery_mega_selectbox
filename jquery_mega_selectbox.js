@@ -5,33 +5,19 @@ jQuery.fn.mega_selectbox = (function($) {
   // speed-up in ie
   var d = $(document);
 
-  // function name => stacktrace
   if (!$.stopEvent) {
-    $.stopEvent = function(e){
-      // jQuery 1.3.X では ie でもイベント互換オブジェクトがわたる(要調査)!!!
-      if ($.browser.msie) { 
-          // use "var"!!!
-          keycode = event.keyCode; 
-          ctrl = event.ctrlKey; 
-          shift = event.shiftKey; 
-          event.returnValue = false; 
-          event.cancelBubble = true; 
-      } else {
-          keycode = e.which; 
-          ctrl = typeof e.modifiers == 'undefined' ? e.ctrlKey : e.modifiers & Event.CONTROL_MASK; 
-          shift = typeof e.modifiers == 'undefined' ? e.shiftKey : e.modifiers & Event.SHIFT_MASK; 
-          e.preventDefault();  // browser 組み込みの動作を防止（リンクなど)
-          e.stopPropagation(); // stop bubbling up
-      } 
+    $.stopEvent = function stopEvent(e){
+      e.preventDefault();  // browser 組み込みの動作を防止（リンクなど)
+      e.stopPropagation(); // stop bubbling up
       return false;
     }
   }
 
   // メニューが表示されてる状態で、メニュー以外の領域がクリックされたときの
   // クリックハンドラ追加
-  var setHideHandler = function() {
+  var setHideHandler = function setHideHandler() {
     $(document).click(function(e){
-      if($(e.target).hasClass('optgroup')){
+      if($(e.target).hasClass('mega_selectbox')){
         return $.stopEvent(e);
       } else {
         // ul.optgroup, select.mega_selectboxハ、ショキカジニキオクシテオイテ、ソレヲツカウヨウニスル!!!
@@ -42,7 +28,7 @@ jQuery.fn.mega_selectbox = (function($) {
   }
 
   // selectboxアイテムクリックハンドラ追加
-  var setClickHandler = function(select, $ul_optg) {
+  var setClickHandler = function setClickHandler(select, $ul_optg) {
     // mousedown ナノハナゼ？ !!!
     $ul_optg
       .find('input:button')
@@ -72,7 +58,7 @@ jQuery.fn.mega_selectbox = (function($) {
   var unselectedCss   = {'background-color':'white','color':'black'};
   var selectedCss = {'background-color':'navy','color':'white'};
 
-  var generateSelectboxBodyHtml = function($select) {
+  var generateSelectboxBodyHtml = function generateSelectboxBodyHtml($select) {
     var html = ['<div class="optgroup"><ul class="optgroup">'];
     $optgroups = $select.find('optgroup');
     $optgroups.each(function(){
@@ -91,7 +77,7 @@ jQuery.fn.mega_selectbox = (function($) {
   }
 
   // ゼンブカバーデキテル？
-  var isOverlapped = function(area1, area2) {
+  var isOverlapped = function isOverlapped(area1, area2) {
     return !((area1.left > area2.left + area2.w) ||
              (area1.top > area2.top + area2.h) ||
              (area1.left + area1.w < area2.left) ||
@@ -99,7 +85,7 @@ jQuery.fn.mega_selectbox = (function($) {
   }
 
   // メニューの中身と重複する位置にあるselectを非表示にする
-  var hideOverlappedSelect = function(except, $ul_optg) {
+  var hideOverlappedSelect = function hideOverlappedSelect(except, $ul_optg) {
     var ofg = $.extend($ul_optg.offset(),{w:$ul_optg.width(),h:$ul_optg.height()});
     $('select').not(except)
       .each(function(){
@@ -114,7 +100,7 @@ jQuery.fn.mega_selectbox = (function($) {
   }
 
   // selectboxにクリックハンドラを追加する
-  var initSelect = function(select, config) {
+  var initSelect = function initSelect(select, config) {
     var $select = $(select);
     
     $select.mousedown(function(e) {
@@ -128,9 +114,7 @@ jQuery.fn.mega_selectbox = (function($) {
       $select
         .focus()
         .attr('disabled', true)
-        .blur()
-        .parent()
-        .find('ul.optgroup');
+        .blur();
       $ul_optg
         .show()
         .css({top:of.h});
@@ -158,7 +142,7 @@ jQuery.fn.mega_selectbox = (function($) {
     setClickHandler($select, $ul_optg);
   }
 
-  var main = function(config){
+  var main = function main(config){
     if(!initialized){
       setHideHandler();
       initialized = true;
@@ -166,7 +150,6 @@ jQuery.fn.mega_selectbox = (function($) {
 
     var defaultConfig = {};
     config = $.extend(defaultConfig, config || {});
-    // jquery object prefix
     var $selects = this;
     $selects.each(function() {
       initSelect(this, config);
