@@ -85,13 +85,8 @@ jQuery.fn.megaSelectbox = (function($) {
           if(isIE6)
             $('select.mega_selectbox_hidden').removeClass('mega_selectbox_hidden');
       })
-      .hover(function(){
-                $(this).addClass('hover');
-              }
-            ,function(){
-                $(this).removeClass('hover');
-              })
-      .end();
+      .hover(function(){ $(this).addClass('hover'); }
+            ,function(){ $(this).removeClass('hover'); });
   }
 
   var isIE6 = (function() {return $.browser.msie && $.browser.version == '6.0'})();
