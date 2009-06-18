@@ -62,7 +62,7 @@ jQuery.fn.megaSelectbox = (function($) {
   }
 
   // ulアイテムクリックハンドラ追加
-  var setClickHandler = function setClickHandler($select, $ul_optg) {
+  var setULClickHandler = function setULClickHandler($select, $ul_optg) {
     $ul_optg
       .find('input:button')
       .click(function(){
@@ -133,7 +133,7 @@ jQuery.fn.megaSelectbox = (function($) {
     var $ul_optg = $select.parent().find('ul.optgroup');
 
     setMouseDownHandler($select, $ul_optg);
-    setClickHandler($select, $ul_optg);
+    setULClickHandler($select, $ul_optg);
   }
 
   var main = function main(config){
