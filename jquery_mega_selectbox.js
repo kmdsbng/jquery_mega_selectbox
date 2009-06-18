@@ -114,14 +114,14 @@ jQuery.fn.megaSelectbox = (function($) {
 
   // メニューの中身と重複する位置にあるselectを非表示にする
   var hideOverlappedSelect = function hideOverlappedSelect(except, $ul_optg) {
-    var ofg = $.extend($ul_optg.offset(),{w:$ul_optg.width(),h:$ul_optg.height()});
+    var ulArea = getArea($ul_optg);
     $('select').not(except)
       .each(function(){
-        var elm = $(this);
-        var ofe = $.extend(elm.offset(),{w:elm.width(),h:elm.height()});
-        if (isOverlapped(ofg, ofe)) {
-          elm.addClass('mega_selectbox_hidden')
-             .attr('optgroup',1);
+        var $selectOther = $(this);
+        var selectArea = getArea($selectOther);
+        if (isOverlapped(ulArea, selectArea)) {
+          $selectOther.addClass('mega_selectbox_hidden')
+                      .attr('optgroup',1);
         } 
       });
   }
