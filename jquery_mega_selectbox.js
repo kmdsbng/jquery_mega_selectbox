@@ -27,22 +27,27 @@ jQuery.fn.megaSelectbox = (function($) {
     });
   }
 
+  // 要素の領域を取得 {top: , left:, h: , w: }
+  var getArea = function getArea($e) {
+    return $.extend($e.position(),{h: $e.height(), w:$e.width()});
+  }
+
   // selectboxアイテムmousedownハンドラ追加
   var setMouseDownHandler = function setMouseDownHandler($select, $ul_optg) {
     $select.mousedown(function(e) {
       $('ul.optgroup').hide();
       $('select.mega_selectbox').attr('disabled', false);
       var value = $select.val();
-      var of = $.extend($select.offset(),{h: parseInt($select.height()), w:parseInt($select.width())});
-      of.h += ($.browser.msie) ? 4 : 2;
+      var offset = getArea($select);
+      offset.h += ($.browser.msie) ? 4 : 2;
 
       $select
         .focus()
         .attr('disabled', true)
         .blur();
+      $ul_optg.parent().css({top: offset.top + offset.h, left: offset.left});
       $ul_optg
-        .show()
-        .css({top:of.h});
+        .show();
       $ul_optg
         .find('input:button')
         .removeClass('selected')
@@ -127,7 +132,7 @@ jQuery.fn.megaSelectbox = (function($) {
     
     var selectboxBodyHtml = generateSelectboxBodyHtml($select);
     $select.before(selectboxBodyHtml);
-    var $ul_optg = $select.parent().find('ul.optgroup');
+    var $ul_optg = $select.prev().find('ul.optgroup');
 
     setMouseDownHandler($select, $ul_optg);
     setULClickHandler($select, $ul_optg);
