@@ -25,7 +25,6 @@ div.optgroup ul.optgroup{
   white-space: nowrap;
   padding:0;
   position: absolute;
-  z-index: 99;
 }
 
 div.optgroup ul.optgroup li{
