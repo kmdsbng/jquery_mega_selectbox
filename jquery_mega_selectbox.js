@@ -36,7 +36,6 @@ jQuery.fn.megaSelectbox = (function($) {
       var of = $.extend($select.offset(),{h: parseInt($select.height()), w:parseInt($select.width())});
       of.h += ($.browser.msie) ? 4 : 2;
 
-      // focus, blurハイル？
       $select
         .focus()
         .attr('disabled', true)
@@ -48,7 +47,6 @@ jQuery.fn.megaSelectbox = (function($) {
         .find('input:button')
         .removeClass('selected')
         .removeClass('hover');
-      // use class only
       $ul_optg
         .find('input[value=' + value + ']')
         .addClass('selected');
