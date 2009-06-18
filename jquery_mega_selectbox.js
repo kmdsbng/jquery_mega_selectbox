@@ -63,7 +63,6 @@ jQuery.fn.megaSelectbox = (function($) {
 
   // ulアイテムクリックハンドラ追加
   var setClickHandler = function setClickHandler($select, $ul_optg) {
-    // mousedown ナノハナゼ？ !!!
     $ul_optg
       .find('input:button')
       .click(function(){
@@ -76,12 +75,9 @@ jQuery.fn.megaSelectbox = (function($) {
             $('select[optgroup=1]').css('visibility','visible');
       })
       .hover(function(){
-                // use class & use other name for hover!!!
-                //if($(this).attr('selected') == 1){ return true;}
                 $(this).addClass('hover');
               }
             ,function(){
-                //if($(this).attr('selected') == 1){ return true;}
                 $(this).removeClass('hover');
               })
       .end();
