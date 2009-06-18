@@ -46,13 +46,12 @@ jQuery.fn.megaSelectbox = (function($) {
         .css({top:of.h});
       $ul_optg
         .find('input:button')
-        .removeClass('hover')
-        .attr('selected',null);
+        .removeClass('selected')
+        .removeClass('hover');
       // use class only
       $ul_optg
         .find('input[value=' + value + ']')
-        .addClass('hover')
-        .attr('selected','selected');
+        .addClass('selected');
 
       if(isIE6) {
         // input 対応モイル？ !!!
@@ -67,7 +66,7 @@ jQuery.fn.megaSelectbox = (function($) {
     // mousedown ナノハナゼ？ !!!
     $ul_optg
       .find('input:button')
-      .mousedown(function(){
+      .click(function(){
           var elem = $(this);
           $select.val(elem.val());
           $select.attr('disabled', false);
@@ -78,11 +77,11 @@ jQuery.fn.megaSelectbox = (function($) {
       })
       .hover(function(){
                 // use class & use other name for hover!!!
-                if($(this).attr('selected') == 1){ return true;}
+                //if($(this).attr('selected') == 1){ return true;}
                 $(this).addClass('hover');
               }
             ,function(){
-                if($(this).attr('selected') == 1){ return true;}
+                //if($(this).attr('selected') == 1){ return true;}
                 $(this).removeClass('hover');
               })
       .end();

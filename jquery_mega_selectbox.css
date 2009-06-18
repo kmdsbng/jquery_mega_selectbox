@@ -66,3 +66,8 @@ div.optgroup ul.optgroup input.hover {
   color: white;
 }
 
+div.optgroup ul.optgroup input.selected {
+  background-color: gray;
+  color: white;
+}
+
