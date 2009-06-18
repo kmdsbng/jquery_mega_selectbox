@@ -110,7 +110,6 @@ jQuery.fn.mega_selectbox = (function($) {
     return html.join("");
   }
 
-  // ゼンブカバーデキテル？
   var isOverlapped = function isOverlapped(area1, area2) {
     return !((area1.left > area2.left + area2.w) ||
              (area1.top > area2.top + area2.h) ||
