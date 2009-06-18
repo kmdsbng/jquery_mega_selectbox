@@ -3,7 +3,7 @@ jQuery.fn.mega_selectbox = (function($) {
   var initialized = false;
 
   // speed-up in ie
-  var d = $(document);
+  var $d = $(document);
 
   if (!$.stopEvent) {
     $.stopEvent = function stopEvent(e){
@@ -16,7 +16,7 @@ jQuery.fn.mega_selectbox = (function($) {
   // メニューが表示されてる状態で、メニュー以外の領域がクリックされたときの
   // クリックハンドラ追加
   var setHideHandler = function setHideHandler() {
-    $(document).click(function(e){
+    $d.click(function(e){
       if($(e.target).hasClass('mega_selectbox')){
         return $.stopEvent(e);
       } else {
@@ -33,8 +33,7 @@ jQuery.fn.mega_selectbox = (function($) {
     $ul_optg
       .find('input:button')
       .mousedown(function(){
-          // var!!!
-          elem = $(this);
+          var elem = $(this);
           select.val(elem.val());
           select.attr('disabled', false);
           elem.parents('ul.optgroup').hide();
@@ -89,9 +88,8 @@ jQuery.fn.mega_selectbox = (function($) {
     var ofg = $.extend($ul_optg.offset(),{w:$ul_optg.width(),h:$ul_optg.height()});
     $('select').not(except)
       .each(function(){
-        // var !!!
-        elm = $(this);
-        ofe = $.extend(elm.offset(),{w:elm.width(),h:elm.height()});
+        var elm = $(this);
+        var ofe = $.extend(elm.offset(),{w:elm.width(),h:elm.height()});
         if (isOverlapped(ofg, ofe)) {
           elm.css('visibility','hidden')
              .attr('optgroup',1);
