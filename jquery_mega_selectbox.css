@@ -71,3 +71,8 @@ div.optgroup ul.optgroup input.selected {
   color: white;
 }
 
+select.mega_selectbox_hidden {
+  visibility: visible;
+}
+
+

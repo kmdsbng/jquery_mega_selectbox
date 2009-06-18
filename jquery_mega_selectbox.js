@@ -70,9 +70,8 @@ jQuery.fn.megaSelectbox = (function($) {
           $select.val(elem.val());
           $select.attr('disabled', false);
           elem.parents('ul.optgroup').hide();
-          // use class!!!
           if(isIE6)
-            $('select[optgroup=1]').css('visibility','visible');
+            $('select[optgroup=1]').addClass('mega_selectbox_hidden');
       })
       .hover(function(){
                 $(this).addClass('hover');
@@ -118,7 +117,7 @@ jQuery.fn.megaSelectbox = (function($) {
         var elm = $(this);
         var ofe = $.extend(elm.offset(),{w:elm.width(),h:elm.height()});
         if (isOverlapped(ofg, ofe)) {
-          elm.css('visibility','hidden')
+          elm.addClass('mega_selectbox_hidden')
              .attr('optgroup',1);
         } 
       });
