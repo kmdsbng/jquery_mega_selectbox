@@ -42,7 +42,7 @@ jQuery.fn.megaSelectbox = (function($) {
   }
 
   // selectboxアイテムmousedownハンドラ追加
-  var setMouseDownHandler = function setMouseDownHandler($select, $ul_optg) {
+  var setMouseDownHandler = function setMouseDownHandler($select, $ul) {
     $select.mousedown(function(e) {
       $(uls).hide();
       $(selects).attr('disabled', false);
@@ -54,34 +54,34 @@ jQuery.fn.megaSelectbox = (function($) {
         .focus()
         .attr('disabled', true)
         .blur();
-      $ul_optg.parent().css({top: select_area.top + select_area.h, left: select_area.left});
-      $ul_optg
+      $ul.parent().css({top: select_area.top + select_area.h, left: select_area.left});
+      $ul
         .show();
-      $ul_optg
+      $ul
         .find('input:button')
         .removeClass('selected')
         .removeClass('hover');
-      $ul_optg
+      $ul
         .find('input[value=' + value + ']')
         .addClass('selected');
 
       if(isIE6) {
         // input 対応モイル？ !!!
-        hideOverlappedSelect(this, $ul_optg);
+        hideOverlappedSelect(this, $ul);
       }
       return $.stopEvent(e);
     });
   }
 
   // ulアイテムクリックハンドラ追加
-  var setULClickHandler = function setULClickHandler($select, $ul_optg) {
-    $ul_optg
+  var setULClickHandler = function setULClickHandler($select, $ul) {
+    $ul
       .find('input:button')
       .click(function(){
           var elem = $(this);
           $select.val(elem.val());
           $select.attr('disabled', false);
-          $ul_optg.hide();
+          $ul.hide();
           if(isIE6)
             $('select.mega_selectbox_hidden').removeClass('mega_selectbox_hidden');
       })
@@ -117,8 +117,9 @@ jQuery.fn.megaSelectbox = (function($) {
   }
 
   // メニューの中身と重複する位置にあるselectを非表示にする
-  var hideOverlappedSelect = function hideOverlappedSelect(except, $ul_optg) {
-    var ulArea = getArea($ul_optg);
+  // IE6だと表示divよりも上にselectが表示されてしまうため
+  var hideOverlappedSelect = function hideOverlappedSelect(except, $ul) {
+    var ulArea = getArea($ul);
     $('select').not(except)
       .each(function(){
         var $selectOther = $(this);
@@ -137,11 +138,11 @@ jQuery.fn.megaSelectbox = (function($) {
     var selectboxBodyHtml = generateSelectboxBodyHtml($select);
     $select.before(selectboxBodyHtml);
     
-    var $ul_optg = $select.prev().find('ul.optgroup');
-    uls.push($ul_optg[0]);
+    var $ul = $select.prev().find('ul.optgroup');
+    uls.push($ul[0]);
 
-    setMouseDownHandler($select, $ul_optg);
-    setULClickHandler($select, $ul_optg);
+    setMouseDownHandler($select, $ul);
+    setULClickHandler($select, $ul);
   }
 
   var main = function main(config){
@@ -166,3 +167,7 @@ jQuery.fn.megaSelectbox = (function($) {
 jQuery(function($){
     $('select.mega_selectbox').megaSelectbox();
 });
+
+
+
+
