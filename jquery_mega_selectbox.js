@@ -38,14 +38,14 @@ jQuery.fn.megaSelectbox = (function($) {
       $('ul.optgroup').hide();
       $('select.mega_selectbox').attr('disabled', false);
       var value = $select.val();
-      var offset = getArea($select);
-      offset.h += ($.browser.msie) ? 4 : 2;
+      var select_area = getArea($select);
+      select_area.h += ($.browser.msie) ? 4 : 2;
 
       $select
         .focus()
         .attr('disabled', true)
         .blur();
-      $ul_optg.parent().css({top: offset.top + offset.h, left: offset.left});
+      $ul_optg.parent().css({top: select_area.top + select_area.h, left: select_area.left});
       $ul_optg
         .show();
       $ul_optg
