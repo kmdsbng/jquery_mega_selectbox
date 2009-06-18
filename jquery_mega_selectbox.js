@@ -1,5 +1,5 @@
 
-jQuery.fn.mega_selectbox = (function($) {
+jQuery.fn.megaSelectbox = (function($) {
   var initialized = false;
 
   // speed-up in ie
@@ -163,5 +163,5 @@ jQuery.fn.mega_selectbox = (function($) {
 })(jQuery);
 
 jQuery(function($){
-    $('select.mega_selectbox').mega_selectbox();
+    $('select.mega_selectbox').megaSelectbox();
 });
