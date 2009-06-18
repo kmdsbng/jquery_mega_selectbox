@@ -27,15 +27,50 @@ jQuery.fn.mega_selectbox = (function($) {
     });
   }
 
+  // selectboxアイテムmousedownハンドラ追加
+  var setMouseDownHandler = function setMouseDownHandler($select, $ul_optg) {
+    $select.mousedown(function(e) {
+      $('ul.optgroup').hide();
+      $('select.mega_selectbox').attr('disabled', false);
+      var value = $select.val();
+      var of = $.extend($select.offset(),{h: parseInt($select.height()), w:parseInt($select.width())});
+      of.h += ($.browser.msie) ? 4 : 2;
+
+      // focus, blurハイル？
+      $select
+        .focus()
+        .attr('disabled', true)
+        .blur();
+      $ul_optg
+        .show()
+        .css({top:of.h});
+      $ul_optg
+        .find('input:button')
+        .css(unselectedCss)
+        .attr('selected',null);
+      // use class only
+      $ul_optg
+        .find('input[value=' + value + ']')
+        .css(selectedCss)
+        .attr('selected','selected');
+
+      if(isIE6) {
+        // input 対応モイル？ !!!
+        hideOverlappedSelect(this, $ul_optg);
+      }
+      return $.stopEvent(e);
+    });
+  }
+
   // selectboxアイテムクリックハンドラ追加
-  var setClickHandler = function setClickHandler(select, $ul_optg) {
+  var setClickHandler = function setClickHandler($select, $ul_optg) {
     // mousedown ナノハナゼ？ !!!
     $ul_optg
       .find('input:button')
       .mousedown(function(){
           var elem = $(this);
-          select.val(elem.val());
-          select.attr('disabled', false);
+          $select.val(elem.val());
+          $select.attr('disabled', false);
           elem.parents('ul.optgroup').hide();
           // use class!!!
           if(isIE6)
@@ -101,42 +136,11 @@ jQuery.fn.mega_selectbox = (function($) {
   var initSelect = function initSelect(select, config) {
     var $select = $(select);
     
-    $select.mousedown(function(e) {
-      $('ul.optgroup').hide();
-      $('select.mega_selectbox').attr('disabled', false);
-      var value = $select.val();
-      var of = $.extend($select.offset(),{h: parseInt($select.height()), w:parseInt($select.width())});
-      of.h += ($.browser.msie) ? 4 : 2;
-
-      // focus, blurハイル？
-      $select
-        .focus()
-        .attr('disabled', true)
-        .blur();
-      $ul_optg
-        .show()
-        .css({top:of.h});
-      $ul_optg
-        .find('input:button')
-        .css(unselectedCss)
-        .attr('selected',null);
-      // use class only
-      $ul_optg
-        .find('input[value=' + value + ']')
-        .css(selectedCss)
-        .attr('selected','selected');
-
-      if(isIE6) {
-        // input 対応モイル？ !!!
-        hideOverlappedSelect(this, $ul_optg);
-      }
-      return $.stopEvent(e);
-    });
-
     var selectboxBodyHtml = generateSelectboxBodyHtml($select);
     $select.before(selectboxBodyHtml);
     var $ul_optg = $select.parent().find('ul.optgroup');
 
+    setMouseDownHandler($select, $ul_optg);
     setClickHandler($select, $ul_optg);
   }
 
