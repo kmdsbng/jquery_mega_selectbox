@@ -1,6 +1,8 @@
 
 jQuery.fn.megaSelectbox = (function($) {
   var initialized = false;
+  var uls = [];
+  var selects = [];
 
   // speed-up in ie
   var $d = $(document);
@@ -13,16 +15,23 @@ jQuery.fn.megaSelectbox = (function($) {
     }
   }
 
+  var isRegistedSelect = function isRegistedSelect(e) {
+    for (var i=0; i < selects.length; i++) {
+      if (selects[i] === e)
+        return true;
+    }
+    return false;
+  }
+
   // メニューが表示されてる状態で、メニュー以外の領域がクリックされたときの
   // クリックハンドラ追加
   var setHideHandler = function setHideHandler() {
     $d.click(function(e){
-      if($(e.target).hasClass('mega_selectbox')){
+      if (isRegistedSelect(e.target)) {
         return $.stopEvent(e);
       } else {
-        // ul.optgroup, select.mega_selectboxハ、ショキカジニキオクシテオイテ、ソレヲツカウヨウニスル!!!
-        $('ul.optgroup').hide();
-        $('select.mega_selectbox').attr('disabled', false);
+        $(uls).hide();
+        $(selects).attr('disabled', false);
       }
     });
   }
@@ -35,8 +44,8 @@ jQuery.fn.megaSelectbox = (function($) {
   // selectboxアイテムmousedownハンドラ追加
   var setMouseDownHandler = function setMouseDownHandler($select, $ul_optg) {
     $select.mousedown(function(e) {
-      $('ul.optgroup').hide();
-      $('select.mega_selectbox').attr('disabled', false);
+      $(uls).hide();
+      $(selects).attr('disabled', false);
       var value = $select.val();
       var select_area = getArea($select);
       select_area.h += ($.browser.msie) ? 4 : 2;
@@ -72,9 +81,9 @@ jQuery.fn.megaSelectbox = (function($) {
           var elem = $(this);
           $select.val(elem.val());
           $select.attr('disabled', false);
-          elem.parents('ul.optgroup').hide();
+          $ul_optg.hide();
           if(isIE6)
-            $('select[optgroup=1]').addClass('mega_selectbox_hidden');
+            $('select.mega_selectbox_hidden').removeClass('mega_selectbox_hidden');
       })
       .hover(function(){
                 $(this).addClass('hover');
@@ -120,8 +129,7 @@ jQuery.fn.megaSelectbox = (function($) {
         var $selectOther = $(this);
         var selectArea = getArea($selectOther);
         if (isOverlapped(ulArea, selectArea)) {
-          $selectOther.addClass('mega_selectbox_hidden')
-                      .attr('optgroup',1);
+          $selectOther.addClass('mega_selectbox_hidden');
         } 
       });
   }
@@ -129,10 +137,13 @@ jQuery.fn.megaSelectbox = (function($) {
   // selectboxにクリックハンドラを追加する
   var initSelect = function initSelect(select, config) {
     var $select = $(select);
+    selects.push($select[0]);
     
     var selectboxBodyHtml = generateSelectboxBodyHtml($select);
     $select.before(selectboxBodyHtml);
+    
     var $ul_optg = $select.prev().find('ul.optgroup');
+    uls.push($ul_optg[0]);
 
     setMouseDownHandler($select, $ul_optg);
     setULClickHandler($select, $ul_optg);
