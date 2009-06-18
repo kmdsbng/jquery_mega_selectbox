@@ -1,0 +1,62 @@
+
+select.mega_selectbox{
+}
+
+select.mega_selectbox option{
+}
+
+div.optgroup{
+  background-color: #cccccc;
+  height: 0px;
+  margin: 0;
+  padding: 0;
+  position: absolute;
+  width: 600px;
+  z-index: 99999;
+}
+
+div.optgroup ul.optgroup{
+  background-color: #fefefe;
+  border: 1px solid #7F9DB9;
+  clear: both;
+  display:none;
+  list-style:none;
+  margin:0;
+  white-space: nowrap;
+  padding:0;
+  position: absolute;
+  z-index: 99;
+}
+
+div.optgroup ul.optgroup li{
+}
+
+div.optgroup ul.optgroup li div{
+  line-height: 16px;
+  margin :1px;
+  padding:0px;
+}
+
+div.optgroup ul.optgroup li div.optlabel{
+  background-color: #D4EBFC;
+  border: 1px solid #999999;
+  color: navy;
+  font-size: 12px;
+  font-weight: bold;
+  padding: 0 5px;
+}
+
+div.optgroup ul.optgroup li {
+  border-right: dotted 1px #999999;
+  float:left;
+  margin-right: -1px;
+}
+
+div.optgroup ul.optgroup input{
+  background-color: #fefefe;
+  border: none;
+  cursor: pointer;
+  margin: 0 3px;
+  padding: 0;
+}
+

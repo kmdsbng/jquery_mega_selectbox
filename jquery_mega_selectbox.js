@@ -1,0 +1,183 @@
+
+jQuery.fn.mega_selectbox = (function($) {
+  var initialized = false;
+
+  // speed-up in ie
+  var d = $(document);
+
+  // function name => stacktrace
+  if (!$.stopEvent) {
+    $.stopEvent = function(e){
+      // jQuery 1.3.X では ie でもイベント互換オブジェクトがわたる(要調査)!!!
+      if ($.browser.msie) { 
+          // use "var"!!!
+          keycode = event.keyCode; 
+          ctrl = event.ctrlKey; 
+          shift = event.shiftKey; 
+          event.returnValue = false; 
+          event.cancelBubble = true; 
+      } else {
+          keycode = e.which; 
+          ctrl = typeof e.modifiers == 'undefined' ? e.ctrlKey : e.modifiers & Event.CONTROL_MASK; 
+          shift = typeof e.modifiers == 'undefined' ? e.shiftKey : e.modifiers & Event.SHIFT_MASK; 
+          e.preventDefault();  // browser 組み込みの動作を防止（リンクなど)
+          e.stopPropagation(); // stop bubbling up
+      } 
+      return false;
+    }
+  }
+
+  // メニューが表示されてる状態で、メニュー以外の領域がクリックされたときの
+  // クリックハンドラ追加
+  var setHideHandler = function() {
+    $(document).click(function(e){
+      if($(e.target).hasClass('optgroup')){
+        return $.stopEvent(e);
+      } else {
+        // ul.optgroup, select.mega_selectboxハ、ショキカジニキオクシテオイテ、ソレヲツカウヨウニスル!!!
+        $('ul.optgroup').hide();
+        $('select.mega_selectbox').attr('disabled', false);
+      }
+    });
+  }
+
+  // selectboxアイテムクリックハンドラ追加
+  var setClickHandler = function(select, $ul_optg) {
+    // mousedown ナノハナゼ？ !!!
+    $ul_optg
+      .find('input:button')
+      .mousedown(function(){
+          // var!!!
+          elem = $(this);
+          select.val(elem.val());
+          select.attr('disabled', false);
+          elem.parents('ul.optgroup').hide();
+          // use class!!!
+          if(isIE6)
+            $('select[optgroup=1]').css('visibility','visible');
+      })
+      .hover(function(){
+                // use class & use other name for hover!!!
+                if($(this).attr('selected') == 1){ return true;}
+                $(this).css(selectedCss);
+              }
+            ,function(){
+                if($(this).attr('selected') == 1){ return true;}
+                $(this).css(unselectedCss);
+              })
+      .end();
+  }
+
+  var isIE6 = (function() {return $.browser.msie && $.browser.version == '6.0'})();
+  var unselectedCss   = {'background-color':'white','color':'black'};
+  var selectedCss = {'background-color':'navy','color':'white'};
+
+  var generateSelectboxBodyHtml = function($select) {
+    var html = ['<div class="optgroup"><ul class="optgroup">'];
+    $optgroups = $select.find('optgroup');
+    $optgroups.each(function(){
+      $optgroup = $(this);
+      html.push('<li>');
+      html.push($optgroup.attr('label') ? '<div class="optlabel">' + $optgroup.attr('label') + '</div>' : '');
+      $optgroup.find('option').each(function(i2, opt){
+        opt = $(opt);
+        html.push('<div><input type="button" value="' + opt.text() + '" scale="'+ opt.attr('scale') +'"></div>');
+      });
+      html.push('</li>');
+    });
+
+    html.push('</ul></div>');
+    return html.join("");
+  }
+
+  // ゼンブカバーデキテル？
+  var isOverlapped = function(area1, area2) {
+    return !((area1.left > area2.left + area2.w) ||
+             (area1.top > area2.top + area2.h) ||
+             (area1.left + area1.w < area2.left) ||
+             (area1.top + area1.h < area2.top));
+  }
+
+  // メニューの中身と重複する位置にあるselectを非表示にする
+  var hideOverlappedSelect = function(except, $ul_optg) {
+    var ofg = $.extend($ul_optg.offset(),{w:$ul_optg.width(),h:$ul_optg.height()});
+    $('select').not(except)
+      .each(function(){
+        // var !!!
+        elm = $(this);
+        ofe = $.extend(elm.offset(),{w:elm.width(),h:elm.height()});
+        if (isOverlapped(ofg, ofe)) {
+          elm.css('visibility','hidden')
+             .attr('optgroup',1);
+        } 
+      });
+  }
+
+  // selectboxにクリックハンドラを追加する
+  var initSelect = function(select, config) {
+    var $select = $(select);
+    
+    $select.mousedown(function(e) {
+      $('ul.optgroup').hide();
+      $('select.mega_selectbox').attr('disabled', false);
+      var value = $select.val();
+      var of = $.extend($select.offset(),{h: parseInt($select.height()), w:parseInt($select.width())});
+      of.h += ($.browser.msie) ? 4 : 2;
+
+      // focus, blurハイル？
+      $select
+        .focus()
+        .attr('disabled', true)
+        .blur()
+        .parent()
+        .find('ul.optgroup');
+      $ul_optg
+        .show()
+        .css({top:of.h});
+      $ul_optg
+        .find('input:button')
+        .css(unselectedCss)
+        .attr('selected',null);
+      // use class only
+      $ul_optg
+        .find('input[value=' + value + ']')
+        .css(selectedCss)
+        .attr('selected','selected');
+
+      if(isIE6) {
+        // input 対応モイル？ !!!
+        hideOverlappedSelect(this, $ul_optg);
+      }
+      return $.stopEvent(e);
+    });
+
+    var selectboxBodyHtml = generateSelectboxBodyHtml($select);
+    $select.before(selectboxBodyHtml);
+    var $ul_optg = $select.parent().find('ul.optgroup');
+
+    setClickHandler($select, $ul_optg);
+  }
+
+  var main = function(config){
+    if(!initialized){
+      setHideHandler();
+      initialized = true;
+    }
+
+    var defaultConfig = {};
+    config = $.extend(defaultConfig, config || {});
+    // jquery object prefix
+    var $selects = this;
+    $selects.each(function() {
+      initSelect(this, config);
+    });
+
+    return $(this);
+  }
+  
+  return main;
+})(jQuery);
+
+jQuery(function($){
+    $('select.mega_selectbox').mega_selectbox();
+});
