@@ -46,12 +46,12 @@ jQuery.fn.megaSelectbox = (function($) {
         .css({top:of.h});
       $ul_optg
         .find('input:button')
-        .css(unselectedCss)
+        .removeClass('hover')
         .attr('selected',null);
       // use class only
       $ul_optg
         .find('input[value=' + value + ']')
-        .css(selectedCss)
+        .addClass('hover')
         .attr('selected','selected');
 
       if(isIE6) {
@@ -79,18 +79,16 @@ jQuery.fn.megaSelectbox = (function($) {
       .hover(function(){
                 // use class & use other name for hover!!!
                 if($(this).attr('selected') == 1){ return true;}
-                $(this).css(selectedCss);
+                $(this).addClass('hover');
               }
             ,function(){
                 if($(this).attr('selected') == 1){ return true;}
-                $(this).css(unselectedCss);
+                $(this).removeClass('hover');
               })
       .end();
   }
 
   var isIE6 = (function() {return $.browser.msie && $.browser.version == '6.0'})();
-  var unselectedCss   = {'background-color':'white','color':'black'};
-  var selectedCss = {'background-color':'navy','color':'white'};
 
   var generateSelectboxBodyHtml = function generateSelectboxBodyHtml($select) {
     var html = ['<div class="optgroup"><ul class="optgroup">'];

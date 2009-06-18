@@ -52,11 +52,17 @@ div.optgroup ul.optgroup li {
   margin-right: -1px;
 }
 
+
 div.optgroup ul.optgroup input{
   background-color: #fefefe;
   border: none;
   cursor: pointer;
   margin: 0 3px;
   padding: 0;
+}
+
+div.optgroup ul.optgroup input.hover {
+  background-color: navy;
+  color: white;
 }
 
