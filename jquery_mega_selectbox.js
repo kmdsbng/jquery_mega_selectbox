@@ -62,7 +62,7 @@ jQuery.fn.megaSelectbox = (function($) {
     });
   }
 
-  // selectboxアイテムクリックハンドラ追加
+  // ulアイテムクリックハンドラ追加
   var setClickHandler = function setClickHandler($select, $ul_optg) {
     // mousedown ナノハナゼ？ !!!
     $ul_optg
