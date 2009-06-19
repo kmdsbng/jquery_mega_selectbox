@@ -158,7 +158,7 @@ jQuery.fn.megaSelectbox = (function($) {
       initSelect(this, config);
     });
 
-    return $(this);
+    return this;
   }
   
   return main;
